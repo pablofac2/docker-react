@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo 'Building the checked-out project using a script in the repo..';
                 sh 'chmod +x ./jenkins-scripts/build.sh'
+                sh './jenkins-scripts/build.sh'
                 //sh 'sudo docker build -t pablofac/docker-react -f Dockerfile.dev .'
             }
         }
@@ -19,6 +20,7 @@ pipeline {
             steps {
                 echo 'Testing the checked-out project using a script in the repo..';
                 sh 'chmod +x ./jenkins-scripts/test.sh'
+                sh './jenkins-scripts/test.sh'
                 //sh exit (“1”);
             }
         }
