@@ -11,8 +11,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the checked-out project using a script in the repo..';
-                //sh 'chmod +x ./jenkins-scripts/build.sh'
-                sh 'sudo docker build -t pablofac/docker-react -f Dockerfile.dev .'
+                sh 'chmod +x ./jenkins-scripts/build.sh'
+                //sh 'sudo docker build -t pablofac/docker-react -f Dockerfile.dev .'
             }
         }
         stage('Test') {
