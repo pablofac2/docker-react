@@ -1,1 +1,1 @@
-echo "sudo docker build -t pablofac/docker-react -f Dockerfile.dev ."
+sudo docker build -t pablofac/docker-react -f Dockerfile.dev .
