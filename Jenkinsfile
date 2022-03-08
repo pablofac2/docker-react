@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the checked-out project using a script in the repo..';
-                sh 'chmod +x ./jenkins-scripts/build.sh'
+                sh 'chmod +x ./jenkins-scripts/build.sh' //da permisos de ejecución al archivo
                 sh './jenkins-scripts/build.sh'
                 //sh 'sudo docker build -t pablofac/docker-react -f Dockerfile.dev .'
             }
@@ -19,10 +19,19 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing the checked-out project using a script in the repo..';
-                sh 'chmod +x ./jenkins-scripts/test.sh'
+                sh 'chmod +x ./jenkins-scripts/test.sh' //da permisos de ejecución al archivo
                 sh './jenkins-scripts/test.sh'
                 //sh exit (“1”);
             }
+        }
+    }
+    post {  //similar a try catch
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'successful'
+            step([$class: 'AWSEBDeploymentBuilder', applicationName: '', awsRegion: ''])
         }
     }
 }
