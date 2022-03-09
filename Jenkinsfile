@@ -38,12 +38,12 @@ pipeline {
             echo 'Deploying to AWS'
             script {
                 try {   //avoid stopping deployment if docker-compose.yml doesn't exist
-                    sh 'sudo mv docker-compose.yml dockercompose.nouse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
+                    sh 'sudo mv docker-compose.yml dockercompose.dontuse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
                 } catch (err) {
                     echo "no docker-compose.yml file"
                 }
             }
-            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'AKIAUCFWKMQ3N6KN66XG', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '.', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: '${BUILD_TAG}'])
+            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '.', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: '${BUILD_TAG}'])
         }
     }
 }
