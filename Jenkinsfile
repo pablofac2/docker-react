@@ -43,7 +43,7 @@ pipeline {
                     echo "no docker-compose.yml file"
                 }
             }
-            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: './', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
+            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '${WORKSPACE}', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
             //versionLabelFormat: '${BUILD_TAG}'
             // 'jenkins-aws-deploy-7'
         }
