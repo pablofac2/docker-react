@@ -47,14 +47,14 @@ pipeline {
                     echo "no docker-compose.yml file"
                 }
             }
-            //sh "sudo zip -r /tmp/aws-deploy-${env.BUILD_NUMBER}.zip ."
+            //sh "sudo zip -r aws-deploy-${env.BUILD_NUMBER}.zip ."
             script {
-                zip dir: "", zipFile: "/tmp/aws-deploy-${env.BUILD_NUMBER}.zip", exclude: "**/.git/**/*,**/node_modules/**/*"
+                zip dir: "", zipFile: "aws-deploy-${env.BUILD_NUMBER}.zip", exclude: "**/.git/**/*,**/node_modules/**/*,*.zip"
             }
             step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: "/tmp/aws-deploy-${env.BUILD_NUMBER}.zip", bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
             //versionLabelFormat: '${BUILD_TAG}'
             // 'jenkins-aws-deploy-7'
-            sh "sudo rm /tmp/aws-deploy-${env.BUILD_NUMBER}.zip"
+            sh "sudo rm aws-deploy-${env.BUILD_NUMBER}.zip"
         }
     }
 }
