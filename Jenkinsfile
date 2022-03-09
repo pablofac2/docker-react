@@ -39,8 +39,6 @@ pipeline {
             echo "${env.WORKSPACE}"
             echo "${env.JOB_NAME}"
             echo "${env.BUILD_TAG}"
-            echo '${BUILD_NUMBER}'
-            echo "${BUILD_NUMBER}"
             echo "${env.BUILD_NUMBER}"
             script {
                 try {   //avoid stopping deployment if docker-compose.yml doesn't exist
@@ -49,7 +47,7 @@ pipeline {
                     echo "no docker-compose.yml file"
                 }
             }
-            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: "${env.WORKSPACE}", bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
+            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: "${env.WORKSPACE}/", bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
             //versionLabelFormat: '${BUILD_TAG}'
             // 'jenkins-aws-deploy-7'
         }
