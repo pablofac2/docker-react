@@ -36,9 +36,10 @@ pipeline {
         success {
             echo 'Successful Test'
             echo 'Deploying to AWS'
-            echo ${WORKSPACE}
-            echo ${JOB_NAME}
-            echo ${BUILD_TAG}
+            echo '${env.WORKSPACE}'
+            echo "${env.WORKSPACE}"
+            echo "${env.JOB_NAME}"
+            echo "${env.BUILD_TAG}"
             script {
                 try {   //avoid stopping deployment if docker-compose.yml doesn't exist
                     sh 'sudo mv docker-compose.yml dockercompose.dontuse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
@@ -46,7 +47,7 @@ pipeline {
                     echo "no docker-compose.yml file"
                 }
             }
-            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: ${WORKSPACE}, bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
+            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'aws-credential-id', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '${env.WORKSPACE}', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: 'jenkins-aws-deploy-${BUILD_NUMBER}'])
             //versionLabelFormat: '${BUILD_TAG}'
             // 'jenkins-aws-deploy-7'
         }
