@@ -28,10 +28,17 @@ pipeline {
     post {  //similar a try catch
         always {
             echo 'This will always run'
+            echo 'Cleaning Testing stuff'
+            sh 'chmod +x ./jenkins-scripts/clean.sh' //da permisos de ejecución al archivo
+            sh './jenkins-scripts/clean.sh'
+            sh 'hosafda'   //para verificar si falla y sigue
         }
         success {
-            echo 'successful'
-            step([$class: 'AWSEBDeploymentBuilder', applicationName: '', awsRegion: ''])
+            echo 'Successful Test'
+            echo 'Deploying to AWS'
+            sh 'sudo mv docker-compose.yml dockercompose.nouse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
+            sh 'sudo mv docker-compose.ml dockercompose.nouse2'  //para verificar si falla y sigue
+            step([$class: 'AWSEBDeploymentBuilder', credentialId: 'AKIAUCFWKMQ3N6KN66XG', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '.', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: '${GIT_COMMIT}-${BUILD_TAG}'])
         }
     }
 }

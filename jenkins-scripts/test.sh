@@ -1,1 +1,1 @@
-sudo docker run -e CI=true pablofac/docker-react npm run test
+sudo docker run --name docker-react-test-cont -e CI=true pablofac/docker-react-test npm run test
