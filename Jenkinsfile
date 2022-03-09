@@ -36,11 +36,13 @@ pipeline {
         success {
             echo 'Successful Test'
             echo 'Deploying to AWS'
-            try {   //avoid stopping deployment if docker-compose.yml doesn't exist
-                sh 'sudo mv docker-compose.yml dockercompose.nouse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
-                sh 'sudo mv docker-compose.ml dockercompose.nouse2'  //para verificar si falla y sigue
-            } catch (err) {
-                echo "no docker-compose.yml file"
+            script {
+                try {   //avoid stopping deployment if docker-compose.yml doesn't exist
+                    sh 'sudo mv docker-compose.yml dockercompose.nouse'   //aws linux 2 Docker AMI executes docker-comose is present, so renaming it to build Dockerfile instead
+                    sh 'sudo mv docker-compose.ml dockercompose.nouse2'  //para verificar si falla y sigue
+                } catch (err) {
+                    echo "no docker-compose.yml file"
+                }
             }
             step([$class: 'AWSEBDeploymentBuilder', credentialId: 'AKIAUCFWKMQ3N6KN66XG', awsRegion: 'us-east-1', applicationName: 'docker-react', environmentName: 'Dockerreact-env', rootObject: '.', bucketName: 'elasticbeanstalk-us-east-1-279555236918', versionLabelFormat: '${GIT_COMMIT}-${BUILD_TAG}'])
         }
