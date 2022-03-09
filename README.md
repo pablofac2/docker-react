@@ -1,3 +1,75 @@
+# CI Example Setup
+
+This is a CI/CD example using Jenkins and AWS.
+
+## Requirements:
+
+AWS user, this example will use only the free tier
+Jenkins user
+Github user
+Docker installed on your machine (used to run Jenkins and the Application tests phase)
+
+## Config files explanation
+
+Dockerfile creates an image to run our application.
+Dockerfile.dev creates an image to run the tests needed before the automated deployment.
+Jenkinsfile and jenkins-scripts contains the Jenkins Pipeline for the CI/CD.
+
+## AWS Elastic Beanstalk Creation
+
+First we need to log into our Amazon Web Services account and create a new Elastic Beanstalk Application, selecting Docker in platform.
+
+Then we need the API keys to later deploy our application:
+- Go to IAM Identity Access Management, Users, new User, programatic access
+- Add existing policies: AWSElasticBeanstalkManagedUpdatesCustomerRolePolicy, EC2 Full Access and S3 Full Access
+- Take note of the Access Key ID and Secret Access Key
+
+## GitHub repo pull
+
+Pull the repo to your local work folder
+
+## Jenkins Installation
+
+We will be runing Jenkins in a Docker container.
+Also, in order to let Jenkins run the testing stage in the Dockerfile.dev, we need to expose Docker sockets to the Jenkins container, in order to do so refer to this repo:
+https://github.com/pablofac2/jenkins-withdocker.git
+
+Ones Jenkins container up and running, access it on localhost:8080
+
+Install and configure the following Plugin:
+- AWSEB Deployment: This plugin allows you to deploy into AWS Elastic Beanstalk by Packaging, Creating a new Application Version, and Updating an Environment
+- Open Jenkins: Jenkins > Credentials > System > Global credentials (unrestricted) > Add Credentials
+- Give to the credentials (ID) the name "aws-credential-id" otherwise needs to be changed in Jenkinsfile
+- Type created AWS Access Key ID and Secret Access Key
+
+Install and configure the following Plugin:
+- GitHub plugin: lets jenkins know when a new push to the GitHub repo occurs, initiating the Automated Testing and Deployment.
+
+Finally we need to create a new Jenkins Job as Pipeline:
+- Give it a name
+- Enable "GitHub hook trigger for GITScm polling"
+- In Pipeline Definition select "Pipeline script from SCM", Guit, paste your GitHub Pero URL, Main Branch, etc
+- Save
+
+## Jenkinsfile customization
+
+Update the Jenkinsfile with your own AWS and Github Repo information.
+
+## Pushing Changes to GitHub
+
+Now if we push to the Main:
+- On your local Repo Folder
+- git init
+- git add .
+- git remote add origin {your repo URL}
+- git branch -M main
+- git commit -m "first commit"
+- git push -u origin main
+
+## Check the Deployment on Jenkins and AWS Elastic Beanstalk
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
