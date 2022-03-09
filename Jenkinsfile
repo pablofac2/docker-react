@@ -31,7 +31,7 @@ pipeline {
             echo 'Cleaning Testing stuff'
             sh 'chmod +x ./jenkins-scripts/clean.sh' //da permisos de ejecución al archivo
             sh './jenkins-scripts/clean.sh'
-            sh 'hosafda'   //para verificar si falla y sigue
+            //cualquier falla acá detiene el script
         }
         success {
             echo 'Successful Test'
